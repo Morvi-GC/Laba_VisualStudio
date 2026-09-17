@@ -21,16 +21,46 @@ class Complex_Number //klasa liczba zespolona
 		Real_Number = Prime.Real_Number; // (lewa) miejsce na dane nowego obiektu = (prawa) dane starego obiektu 
 		Imaginary_Number = Prime.Imaginary_Number;
 	}
-	Complex_Number operator+ (const Complex_Number& Right) const // dodawanie do lewej strony prawą stronę równania i tworzymy wartości nowego obiektu
+	Complex_Number operator+ (const Complex_Number& Right_P) const // dodawanie do lewej strony prawą stronę równania i tworzymy wartości nowego obiektu
 	{
-		double Sum_Real = Real_Number + Right.Real_Number; // zapisanie sumy pierwszych pól obu stron
-		double Sum_Imaginary = Imaginary_Number + Right.Imaginary_Number;
+		double Sum_Real_P = Real_Number + Right_P.Real_Number; // zapisanie sumy pierwszych pól obu stron
+		double Sum_Imaginary_P = Imaginary_Number + Right_P.Imaginary_Number;
 
-		Complex_Number Result(Sum_Real, Sum_Imaginary); // tworzenie nowego obiektu z dwiema warotściamy (suma v1 i v2)
+		Complex_Number Result_Sum(Sum_Real_P, Sum_Imaginary_P); // tworzenie nowego obiektu z dwiema warotściamy (suma v1 i v2)
 
 
-		return Result; // Zwrócenie wyniku do miejsca, które wywołało dodawanie
+		return Result_Sum; // Zwrócenie wyniku do miejsca, które wywołało dodawanie
 	}
+	Complex_Number operator- (const Complex_Number& Right_M) const // operator odejmowania
+	{
+		double Sub_Real_M = Real_Number - Right_M.Real_Number;
+		double Sub_Imaginary_M = Imaginary_Number - Right_M.Imaginary_Number;
+
+		Complex_Number Result_Sub (Sub_Real_M, Sub_Imaginary_M);
+
+		return Result_Sub;
+	}
+	Complex_Number operator* (const Complex_Number& Right_Multi) const // operator mnożenia 
+	{
+		double Multi_Real = Real_Number * Right_Multi.Real_Number;
+		double Multi_Imaginary = Imaginary_Number * Right_Multi.Imaginary_Number;
+
+		Complex_Number Result_Multi(Multi_Real, Multi_Imaginary);
+
+		return Result_Multi;
+	}
+	Complex_Number operator/ (const Complex_Number& Right_Divide) const // operator dzielenia
+	{
+		double Divide_Real = Real_Number / Right_Divide.Real_Number;
+		double Divide_Imaginary = Imaginary_Number / Right_Divide.Imaginary_Number;
+
+		Complex_Number Result_Divide(Divide_Real, Divide_Imaginary);
+
+		return Result_Divide;
+
+	}
+
+
 
 
 };
@@ -42,6 +72,9 @@ int main()
 
 	Complex_Number LiczbaZesV2(LiczbaZesV1); // utworzenie nowego obiektu ze wskazanem kopiowanego obiektu
 	Complex_Number Sum = LiczbaZesV1 + LiczbaZesV2; // wywołanie operatora dodawania dla V1 i V2 oraz utworzenie obiektu Sum z wyniku
+
+	Complex_Number LiczbaZesV3(LiczbaZesV2);
+	Complex_Number Sub = LiczbaZesV2 - LiczbaZesV3;
 
 
 
