@@ -4,10 +4,10 @@ using namespace std;
 
 class Complex_Number //klasa liczba zespolona
 {
+	public: // ponizsze pola i metody sa dostepne spoza klasy
 	double Real_Number = 0; // liczba rzeczywista
 	double Imaginary_Number = 0; // liczba urojona 
 
-	public: // dostęp do danych po za klasą | u góry jest private
 
 	Complex_Number(double Real, double Imaginary) // konstruktor przyjmuje wartości i zapisuje je w polach tworzonego obiektu
 	{
@@ -23,20 +23,20 @@ class Complex_Number //klasa liczba zespolona
 	}
 	Complex_Number operator+ (const Complex_Number& Right_P) const // dodawanie do lewej strony prawą stronę równania i tworzymy wartości nowego obiektu
 	{
-		double Sum_Real_P = Real_Number + Right_P.Real_Number; // zapisanie sumy pierwszych pól obu stron
-		double Sum_Imaginary_P = Imaginary_Number + Right_P.Imaginary_Number;
+		double Sum_Real = Real_Number + Right_P.Real_Number; // zapisanie sumy pierwszych pól obu stron
+		double Sum_Imaginary = Imaginary_Number + Right_P.Imaginary_Number;
 
-		Complex_Number Result_Sum(Sum_Real_P, Sum_Imaginary_P); // tworzenie nowego obiektu z dwiema warotściamy (suma v1 i v2)
+		Complex_Number Result_Sum(Sum_Real, Sum_Imaginary); // tworzenie nowego obiektu z dwiema warotściamy (suma v1 i v2)
 
 
 		return Result_Sum; // Zwrócenie wyniku do miejsca, które wywołało dodawanie
 	}
 	Complex_Number operator- (const Complex_Number& Right_M) const // operator odejmowania
 	{
-		double Sub_Real_M = Real_Number - Right_M.Real_Number;
-		double Sub_Imaginary_M = Imaginary_Number - Right_M.Imaginary_Number;
+		double Sub_Real = Real_Number - Right_M.Real_Number;
+		double Sub_Imaginary = Imaginary_Number - Right_M.Imaginary_Number;
 
-		Complex_Number Result_Sub (Sub_Real_M, Sub_Imaginary_M);
+		Complex_Number Result_Sub (Sub_Real, Sub_Imaginary);
 
 		return Result_Sub;
 	}
@@ -77,26 +77,49 @@ class Complex_Number //klasa liczba zespolona
 
 
 };
+void Display(const Complex_Number& Result)
+{
+	if (Result.Imaginary_Number < 0)
+	{
+		cout << "Czesc rzeczywista i urojona = " << Result.Real_Number;
+		cout << Result.Imaginary_Number << "i" << endl;
+	}
+	else
+	{
+		cout << "Czesc rzeczywista i urojona = " << Result.Real_Number;
+		cout << '+' << Result.Imaginary_Number << "i" << endl;
+	}
+}
 
 
 int main()
 {
 	Complex_Number LiczbaZesV1(5, -3); // obiekt o klasie Complex_Number z danymi w nawiasach
-	cout << "Nasza podstawowa liczba zespolona to" << endl;
 
 	Complex_Number LiczbaZesV2(LiczbaZesV1); // utworzenie nowego obiektu ze wskazanem kopiowanego obiektu
 	Complex_Number Sum = LiczbaZesV1 + LiczbaZesV2; // wywołanie operatora dodawania dla V1 i V2 oraz utworzenie obiektu Sum z wyniku
+	cout << "Wynik dodawanie liczb zespolonych" << endl;
+	Display (Sum);
 
 	Complex_Number LiczbaZesV3(2, 4);
 	Complex_Number Sub = LiczbaZesV2 - LiczbaZesV3;
+	cout << "Wynik odejmowania liczb zespolonych" << endl;
+	Display(Sub);
 
 	Complex_Number LiczbaZesV4(- 6, 4.2);
 	Complex_Number Multi = LiczbaZesV3 * LiczbaZesV4;
+	cout << "Wynik mnozenia liczb zespolonych" << endl;
+	Display(Multi);
 
 	Complex_Number LiczbaZesV5(LiczbaZesV1);
-	Complex_Number Devide = LiczbaZesV3 / LiczbaZesV5;
+	Complex_Number Divide = LiczbaZesV3 / LiczbaZesV5;
+	cout << "Wynik dzielenia liczb zespolonych" << endl;
+	Display(Divide);
+
 	Complex_Number LiczbaZesV6(0, 0);
-	Complex_Number Devide_Zero = LiczbaZesV5 / LiczbaZesV6;
+	Complex_Number Divide_Zero = LiczbaZesV5 / LiczbaZesV6;
+	cout << "Test dzielenia przez zero (wynik zastepczy, nie mozna dzielic przez zero!!!)" << endl;
+	Display(Divide_Zero);
 
 
 
