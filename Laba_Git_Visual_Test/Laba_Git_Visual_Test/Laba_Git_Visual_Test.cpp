@@ -9,7 +9,6 @@ const char DEAD = 'X';
 
 void Initialize(char World[][BOARD_SIZE])
 {
-
 	cout << "Wybierz ile chcesz zywych komorek na start gry - od 0 do 900" << endl;
 	int StartLife = 0;
 	cin >> StartLife;
@@ -24,6 +23,18 @@ void Initialize(char World[][BOARD_SIZE])
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
 			World[i][j] = 'X';
+		}
+	}
+	int Meter = 0;
+	for (int i = 0; i < BOARD_SIZE; i++)
+	{
+		for (int j = 0; j < BOARD_SIZE; j++)
+		{
+			if (Meter < StartLife)
+			{
+				World[i][j] = LIFE;
+				Meter++;
+			}
 		}
 	}
 }
@@ -48,13 +59,75 @@ int GetInput()
 		cin >> Choice;
 
 		return Choice;
-
-
 }
 
-void UpdateGame()
+void UpdateGame(char World[][BOARD_SIZE])
 {
-	
+	char NextWorld[BOARD_SIZE][BOARD_SIZE] = {};
+	for (int i = 0; i < BOARD_SIZE; i++)
+	{
+		for (int j = 0; j < BOARD_SIZE; j++)
+		{
+			int Neighbors = 0;
+			if (i > 0)
+			{
+				if (World[i - 1][j] == LIFE)
+				{
+					Neighbors++;
+				}
+			}
+			if (i < BOARD_SIZE - 1)
+			{
+				if (World[i + 1][j] == LIFE)
+				{
+					Neighbors++;
+				}
+			}
+			if (j > 0)
+			{
+				if (World[i][j - 1] == LIFE)
+				{
+					Neighbors++;
+				}
+			}
+			if (j < BOARD_SIZE - 1)
+			{
+				if (World[i][j + 1] == LIFE)
+				{
+					Neighbors++;
+				}
+			}
+
+			if (i > 0 && j > 0)
+			{
+				if (World[i - 1][j - 1] == LIFE)
+				{
+					Neighbors++;
+				}
+			}
+			if (i > 0 && j < (BOARD_SIZE - 1))
+			{
+				if (World[i - 1][j + 1] == LIFE)
+				{
+					Neighbors++;
+				}
+			}
+			if (i < (BOARD_SIZE - 1) && j > 0)
+			{
+				if (World[i + 1][j - 1] == LIFE)
+				{
+					Neighbors++;
+				}
+			}
+			if (i < (BOARD_SIZE - 1) && j < (BOARD_SIZE - 1))
+			{
+				if (World[i + 1][j + 1] == LIFE)
+				{
+					Neighbors++;
+				}
+			}
+		}
+	}
 }
 
 
@@ -79,6 +152,7 @@ int main()
 			cout << "Nie prawidlowy wybor, wybierz jeszcze raz" << endl;
 
 		}
+
 
 	}
 
