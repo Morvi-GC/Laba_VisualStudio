@@ -4,27 +4,59 @@ using namespace std;
 
 const int BOARD_SIZE = 30;
 
-void Render(int BOARD, int World[][BOARD_SIZE])
+const char LIFE = 'O';
+const char DEAD = 'X';
+
+void Initialize(char World[][BOARD_SIZE])
 {
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			cout << World[i][j] << "_";
+			World[i][j] = 'X';
+		}
+	}
+}
+
+void Render(char World[][BOARD_SIZE])
+{
+	for (int i = 0; i < BOARD_SIZE; i++)
+	{
+		for (int j = 0; j < BOARD_SIZE; j++)
+		{
+			cout << World[i][j] << " ";
 		}
 		cout << endl;
 	}
 }
 
+void UpdateGame()
+{
+	
+}
+
 
 int main()
 {
-	int World[BOARD_SIZE][BOARD_SIZE] = {};
+	char World[BOARD_SIZE][BOARD_SIZE] = {'X'};
 
-	Render(BOARD_SIZE, World);
+	Initialize(World);
+	bool exitGame = 1;
+	while (exitGame)
+	{
+		Render(World);
 
-	bool Life = 1;
-	bool Dead = 0;
+		cout << "Kliknij 1 jesli grasz dalej" << endl;
+		cout << "Kliknij 0 jesli chcesz wyjsc" << endl;
+		int GameLoop = 0;
+		cin >> GameLoop;
+		if (GameLoop == 0)
+		{
+			exitGame = 0;
+		}
+
+	}
+
 
 	return 0;
 }
