@@ -1,28 +1,61 @@
 ﻿#include <iostream>
+#include <string>
 
 using namespace std;
+
+enum Color_Card
+{
+	KIER,
+	PIK,
+	KARO,
+	TREFL,
+};
 
 class Card
 {
 public:
-	Card(int Value, const string& Color)
+	Card(int Value, Color_Card Color)
 	{
 		m_Value = Value;
 		m_Color = Color;
 	}
-	int m_Value = 0;
-	string m_Color;
-	string GetString() const
+	Card()
+	{
+
+	}
+	int GetValue() const
+	{
+		return m_Value;
+	}
+	Color_Card GetColor() const
 	{
 		return m_Color;
+	}
+private:
+	int m_Value = 0;
+	Color_Card m_Color;
+};
+class Deck
+{
+public:
+	Deck()
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 2; j < 15; j++)
+			{
+
+			}
+		}
 	}
 };
 
 int main()
 {
-	Card Two(2, "PIK");
-	Card King(13, "KIER");
-	cout << Two.Card();
+	Card Two_Pik(2, PIK);
+	Card King_Kier(13, KIER);
+	cout << Two_Pik.GetValue() << " " << Two_Pik.GetColor();
+
 
 
 
