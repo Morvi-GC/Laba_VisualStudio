@@ -33,29 +33,39 @@ public:
 	}
 private:
 	int m_Value = 0;
-	Color_Card m_Color;
+	Color_Card m_Color = KIER;
 };
 class Deck
 {
 public:
 	Deck()
 	{
+		int Meter = 0;
 		for (int i = 0; i < 4; i++)
 		{
 			for (int j = 2; j < 15; j++)
 			{
-
+				Card New_Card(j, static_cast<Color_Card>(i));
+				m_Card[Meter] = New_Card;
+				Meter++;
 			}
 		}
 	}
+	void Show_Cards()
+	{
+		for (int i = 0; i < 52; i++)
+		{
+			cout << m_Card[i].GetValue() << " " << m_Card[i].GetColor() << endl;
+		}
+	}
+private:
+	Card m_Card[52] = {};
 };
 
 int main()
 {
-	Card Two_Pik(2, PIK);
-	Card King_Kier(13, KIER);
-	cout << Two_Pik.GetValue() << " " << Two_Pik.GetColor();
-
+	Deck MyDeck;
+	MyDeck.Show_Cards();
 
 
 
