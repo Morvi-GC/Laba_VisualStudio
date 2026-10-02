@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <string>
+#include <cstdlib>
 
 using namespace std;
 
@@ -31,6 +32,38 @@ public:
 	{
 		return m_Color;
 	}
+	string GetColorName() const
+	{
+		switch (m_Color)
+		{
+		case KIER:
+			return "KIER";
+		case PIK:
+			return "PIK";
+		case KARO:
+			return "KARO";
+		case TREFL:
+			return "TREFL";
+		default:
+			return  "Kolor nie znany";
+		}
+	}
+	string GetValueName() const
+	{
+		switch (m_Value)
+		{
+		case 11:
+			return "WALET";
+		case 12:
+			return "DAMA";
+		case 13:
+			return "KROL";
+		case 14:
+			return "AS";
+		default:
+			return to_string(m_Value);
+		}
+	}
 private:
 	int m_Value = 0;
 	Color_Card m_Color = KIER;
@@ -55,7 +88,14 @@ public:
 	{
 		for (int i = 0; i < 52; i++)
 		{
-			cout << m_Card[i].GetValue() << " " << m_Card[i].GetColor() << endl;
+			cout << m_Card[i].GetValueName() << " " << m_Card[i].GetColorName() << endl;
+		}
+	}
+	void Shuffle()
+	{
+		for (int i = 51; i > 0; i--)
+		{
+			int RandomIndex = rand() % (i + 1);
 		}
 	}
 private:
