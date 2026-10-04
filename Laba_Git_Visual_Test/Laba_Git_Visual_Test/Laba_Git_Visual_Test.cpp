@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <string>
 #include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -96,6 +97,11 @@ public:
 		for (int i = 51; i > 0; i--)
 		{
 			int RandomIndex = rand() % (i + 1);
+			{
+				Card CARD = m_Card[i];
+				m_Card[i] = m_Card[RandomIndex];
+				m_Card[RandomIndex] = CARD;
+			}
 		}
 	}
 private:
@@ -104,7 +110,9 @@ private:
 
 int main()
 {
+	srand(static_cast<unsigned int>(time(nullptr)));
 	Deck MyDeck;
+	MyDeck.Shuffle();
 	MyDeck.Show_Cards();
 
 
