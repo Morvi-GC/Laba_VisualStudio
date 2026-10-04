@@ -104,17 +104,114 @@ public:
 			}
 		}
 	}
+	Card DrawCard()
+	{
+		if (m_NextCard >= 52)
+		{
+			Card EmptyCard;
+			cout << "Brak kart" << endl;
+			return EmptyCard;
+		}
+		Card DrawnCard = m_Card[m_NextCard];
+		m_NextCard++;
+		return DrawnCard;
+	}
 private:
 	Card m_Card[52] = {};
+	int m_NextCard = 0;
 };
+class Player
+{
+public:
+	void TakeCards(Deck& deck)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			Card TakenCard = deck.DrawCard();
+			if (TakenCard.GetValue() == 0)
+			{
+				return;
+			}
+			m_HAND[i] = TakenCard;
+		}
+	}
+	void ShowHand()
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			cout << i +1 << ". " << m_HAND[i].GetValueName() << " " << m_HAND[i].GetColorName() << endl;
+		}
+	}
+	void ExchangeCard(Deck& deck, int CardIndex)
+	{
+		if (CardIndex < 0 || CardIndex > 4)
+		{
+			return;
+		}
+		Card UpdataCard = deck.DrawCard();
+		if (UpdataCard.GetValue() == 0)
+		{
+			return;
+		}
+		m_HAND[CardIndex] = UpdataCard;
+	}
+
+private:
+	Card m_HAND[5] = {};
+};
+
+void Initialize(Deck& MyDeck, Player& MyHand, Player& Opponent)
+{
+	MyDeck.Shuffle();
+	MyHand.TakeCards(MyDeck);
+	Opponent.TakeCards(MyDeck);
+}
+void Render(Player& MyHand)
+{
+	MyHand.ShowHand();
+}
+void GetInput(bool &Endgame, int &CardIndex)
+{
+	cout << "Jesli chcesz zakonczyc gre kliknij - q," << endl;
+	CardIndex = -1;
+	cout << "lub podaj numer karty od 1 do 5 ktora wymienisz." << endl;
+	cout << "Jesli nie chcesz wymienic zadnej karty i przejsc dalej kliknij - x" << endl;
+	char EndSymbol;
+	cin >> EndSymbol;
+	if (EndSymbol == 'q')
+	{
+		Endgame = true;
+	}
+	else if (EndSymbol >= '1' && EndSymbol <= '5')
+	{
+		CardIndex = EndSymbol - '1';
+	}
+}
+void UpdateGame(Deck& deck, Player& player, int CardIndex)
+{
+	player.ExchangeCard(deck, CardIndex);
+}
+
 
 int main()
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
-	Deck MyDeck;
-	MyDeck.Shuffle();
-	MyDeck.Show_Cards();
 
+	bool EndGame = false;
+	Deck MyDeck;
+	Player MyHand;
+	Player Opponent;
+
+	Initialize(MyDeck, MyHand, Opponent);
+	int CardIndex = -1;
+	while (!EndGame)
+	{
+		Render(MyHand);
+		GetInput(EndGame, CardIndex);
+		UpdateGame(MyDeck, MyHand, CardIndex);
+
+
+	}
 
 
 	return 0;
