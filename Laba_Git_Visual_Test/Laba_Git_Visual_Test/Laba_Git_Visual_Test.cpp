@@ -155,6 +155,112 @@ public:
 		}
 		m_HAND[CardIndex] = UpdataCard;
 	}
+	int EvaluateHand()
+	{
+		int ValueCounts[15] = {};
+		for (int i = 0; i < 5; i++)
+		{
+			int Value = m_HAND[i].GetValue();
+			ValueCounts[Value]++;
+		}
+		int PairCount = 0;
+		bool HasThree = false;
+		bool HasFour = false;
+		for (int i = 2; i < 15; i++)
+		{
+			if (ValueCounts[i] == 2)
+			{
+				PairCount++;
+			}
+			else if (ValueCounts[i] == 3)
+			{
+				HasThree = true;
+			}
+			else if (ValueCounts[i] == 4)
+			{
+				HasFour = true;
+			}
+		}
+		bool HasFlush = true;
+		for (int i = 1; i < 5; i++)
+		{
+			if (m_HAND[i].GetColor() != m_HAND[0].GetColor())
+			{
+				HasFlush = false;
+			}
+		}
+		bool HasStraight = false;
+		int ConsecutiveCount = 0;
+		for (int i = 2; i < 15; i++)
+		{
+			if (ValueCounts[i] == 1)
+			{
+				ConsecutiveCount++;
+			}
+			else
+			{
+				ConsecutiveCount = 0;
+			}
+			if (ConsecutiveCount == 5)
+			{
+				HasStraight = true;
+			}
+		}
+		if (ValueCounts[14] == 1 && ValueCounts[2] == 1 && ValueCounts[3] == 1 && ValueCounts[4] == 1 && ValueCounts[5] == 1)
+		{
+			HasStraight = true;
+		}
+		if (HasStraight == true && HasFlush == true)
+		{
+			cout << "POKER" << endl;
+			return 8;
+		}
+		else if (HasFour == true)
+		{
+			cout << "KARETA" << endl;
+			return 7;
+		}
+		else if (HasThree == true && PairCount == 1)
+		{
+			cout << "FULL" << endl;
+			return 6;
+		}
+		else if (HasFlush == true)
+		{
+			cout << "KOLOR" << endl;
+			return 5;
+		}
+		else if (HasStraight == true)
+		{
+			cout << "STRIT" << endl;
+			return 4;
+		}
+		else if (HasThree == true)
+		{
+			cout << "TROJKA" << endl;
+			return 3;
+		}
+		else if (PairCount == 2)
+		{
+			cout << "DWIE PARY" << endl;
+			return 2;
+		}
+		else if (PairCount == 1)
+		{
+			cout << "PARA" << endl;
+			return 1;
+		}
+		else
+		{
+			cout << "WYSOKA KARTA" << endl;
+			return 0;
+		}
+
+	}
+	int GetCardValue(int Index)
+	{
+		return m_HAND[Index].GetValue();
+	}
 
 private:
 	Card m_HAND[5] = {};
@@ -170,26 +276,75 @@ void Render(Player& MyHand)
 {
 	MyHand.ShowHand();
 }
-void GetInput(bool &Endgame, int &CardIndex)
+void GetInput(bool &Endgame, int &CardIndex, bool & ExchangeFinished)
 {
-	cout << "Jesli chcesz zakonczyc gre kliknij - q," << endl;
+	cout << "MENU GRY" << endl;
+	cout << "1. Kliknij - q - jesli chcesz zakonczyc gre." << endl;
 	CardIndex = -1;
-	cout << "lub podaj numer karty od 1 do 5 ktora wymienisz." << endl;
-	cout << "Jesli nie chcesz wymienic zadnej karty i przejsc dalej kliknij - x" << endl;
+	cout << "2. Wymiana - 1 do 5 - podaj numer karty ktora chcesz wymienic." << endl;
+	cout << "3. Kliknij inny symbol np - x - jesli nie chcesz wymienic zadnej karty i przejsc dalej." << endl;
+	cout << "4. Kliknij - k - zakoncz wymiane i przejdz do porownania rak" << endl;
 	char EndSymbol;
 	cin >> EndSymbol;
 	if (EndSymbol == 'q')
 	{
 		Endgame = true;
 	}
-	else if (EndSymbol >= '1' && EndSymbol <= '5')
+	else if (EndSymbol >= '1' && EndSymbol <= '5' && ExchangeFinished == false)
 	{
 		CardIndex = EndSymbol - '1';
+	}
+	else if (EndSymbol == 'k')
+	{
+		ExchangeFinished = true;
 	}
 }
 void UpdateGame(Deck& deck, Player& player, int CardIndex)
 {
 	player.ExchangeCard(deck, CardIndex);
+}
+void CompareHands(Player& MyHand, Player& Opponent)
+{
+	int PlayerRank = MyHand.EvaluateHand();
+	int OpponentRank = Opponent.EvaluateHand();
+	if (PlayerRank > OpponentRank)
+	{
+		cout << "WYGRALES !!!" << endl;
+	}
+	else if (OpponentRank > PlayerRank)
+	{
+		cout << "PRZEGRALES :/ " << endl;
+	}
+	else
+	{
+		cout << "Ten sam rodzaj ukladu — potrzebne porownanie kart" << endl;
+		int PlayerCounts[15] = {};
+		int OpponentCounts[15] = {};
+		for (int i = 0; i < 5; i++)
+		{
+			int PlayerValue = MyHand.GetCardValue(i);
+			PlayerCounts[PlayerValue]++;
+			int OpponentValue = Opponent.GetCardValue(i);
+			OpponentCounts[OpponentValue]++;
+		}
+		if (PlayerRank == 1)
+		{
+			int PlayerPair = 0;
+			int OpponentPair = 0;
+			for (int i = 2; i < 15; i++)
+			{
+				if (PlayerCounts[i] == 2)
+				{
+					PlayerPair = i;
+				}
+				if (OpponentCounts[i] == 2)
+				{
+					OpponentPair = i;
+				}
+			}
+		}
+	}
+
 }
 
 
@@ -204,12 +359,18 @@ int main()
 
 	Initialize(MyDeck, MyHand, Opponent);
 	int CardIndex = -1;
+	bool ExchangeFinished = false;
+	bool HandsCompared = false;
 	while (!EndGame)
 	{
 		Render(MyHand);
-		GetInput(EndGame, CardIndex);
+		GetInput(EndGame, CardIndex, ExchangeFinished);
 		UpdateGame(MyDeck, MyHand, CardIndex);
-
+		if (ExchangeFinished == true && HandsCompared == false)
+		{
+			CompareHands(MyHand, Opponent);
+			HandsCompared = true;
+		}
 
 	}
 
